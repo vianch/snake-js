@@ -127,7 +127,6 @@ body,
 	grid-template-columns: repeat(20, 20px);
 	grid-template-rows: repeat(20, 20px);
 	margin: 5px;
-	
 }
 
 .game-border-outline {
@@ -195,4 +194,3 @@ body,
 	width: 400px;
 	height: 400px;
 }
-
