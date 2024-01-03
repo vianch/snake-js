@@ -1,0 +1,8 @@
+node_modules
+.github
+.config
+dist
+.dist
+package-lock.json
+yarn.lock
+src/assets/js/bundle.min.js

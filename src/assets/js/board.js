@@ -9,6 +9,12 @@ class Board {
 		this.#board.appendChild(element);
 	}
 
+	appendElementsToBoard = (elements) => {
+		elements.forEach((element) => {
+			this.appendElementToBoard(element);
+		});
+	};
+
 	clearBoard() {
 		this.#board.innerHTML = "";
 	}

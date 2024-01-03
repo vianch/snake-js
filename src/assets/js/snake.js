@@ -10,41 +10,96 @@ import {
 	defaultPosition,
 } from "./constants";
 
+/**
+ * Represents a Snake Game.
+ * @extends Board
+ */
 class SnakeGame extends Board {
+	/**
+	 * The direction of the snake.
+	 * @type {string}
+	 */
 	snakeDirection = directions.right;
-	snakePositions = [];
-	snakeHeadPosition = {};
-	foodPosition = {};
-	gameStarted = null;
 
+	/**
+	 * The positions of the snake segments (THE SNAKE!!!! ------0).
+	 * @type {Array}
+	 */
+	snakePositions = [];
+
+	/**
+	 * The position of the snake's head.
+	 * @type {Object}
+	 */
+	snakeHeadPosition = {};
+
+	/**
+	 * The position of the food.
+	 * @type {Object}
+	 */
+	foodPosition = {};
+
+	/**
+	 * Indicates if the game has started.
+	 * @type {boolean}
+	 */
+	gameStarted = false;
+
+	/**
+	 * The size of the grid.
+	 * @private
+	 * @type {number}
+	 */
 	#gridSize = defaultGridSize;
+
+	/**
+	 * The interval ID for the game loop.
+	 * @private
+	 * @type {number}
+	 */
 	#gameInterval = null;
+
+	/**
+	 * The delay between game updates.
+	 * @private
+	 * @type {number}
+	 */
 	#gameSpeedDelay = defaultGameDelay;
+
+	/**
+	 * The high score of the game.
+	 * @private
+	 * @type {number}
+	 */
 	#highScore = 0;
 
+	/**
+	 * Creates a new SnakeGame instance.
+	 * @param {Array} snakePositions - Override the initial positions of the snake segments.
+	 */
 	constructor(snakePositions = defaultPosition) {
 		super();
 		this.snakePositions = [...snakePositions];
 		this.foodPosition = this.#generateFoodPosition();
-		this.gameStarted = false;
 	}
 
+	/**
+	 * Checks for collision with the snake's head and the game boundaries or other segments.
+	 * Ends the game if collision is detected.
+	 * @private
+	 */
 	#checkCollision = () => {
-		const collisionDetected = this.snakePositions
-			.slice(1)
-			.some(
-				(segment) =>
-					segment.x === this.snakeHeadPosition.x &&
-					segment.y === this.snakeHeadPosition.y
-			);
+		const { x, y } = this.snakeHeadPosition;
+		const isCollisionDetected =
+			this.snakePositions
+				.slice(1)
+				.some((segment) => segment.x === x && segment.y === y) ||
+			x < 1 ||
+			x > this.#gridSize ||
+			y < 1 ||
+			y > this.#gridSize;
 
-		if (
-			collisionDetected ||
-			this.snakeHeadPosition?.x < 1 ||
-			this.snakeHeadPosition?.x > this.#gridSize ||
-			this.snakeHeadPosition?.y < 1 ||
-			this.snakeHeadPosition?.y > this.#gridSize
-		) {
+		if (isCollisionDetected) {
 			this.endGame();
 		}
 	};
@@ -59,12 +114,15 @@ class SnakeGame extends Board {
 
 	#drawSnake = () => {
 		if (this.gameStarted) {
-			this.snakePositions.forEach((segment) => {
+			const snakeElements = this.snakePositions.map((segment) => {
 				const snakeElement = Board.createGameElement("div", "snake");
 
 				Board.setPosition(snakeElement, segment);
-				this.appendElementToBoard(snakeElement);
+
+				return snakeElement;
 			});
+
+			this.appendElementsToBoard(snakeElements);
 		}
 	};
 
@@ -75,6 +133,12 @@ class SnakeGame extends Board {
 		this.appendElementToBoard(foodElement);
 	};
 
+	/**
+	 * Generates a random position for the food.
+	 * if the new position is occupied by the snake, generate a new position.
+	 * @private
+	 * @returns {Object} - The generated food position.
+	 */
 	#generateFoodPosition = () => {
 		const newPosition = {
 			x: generateRandomNumber(this.#gridSize),
@@ -86,16 +150,21 @@ class SnakeGame extends Board {
 				snakePosition.x === newPosition.x && snakePosition.y === newPosition.y
 		);
 
-		return isPositionOccupied ? this.generateFoodPosition() : newPosition;
+		return isPositionOccupied ? this.#generateFoodPosition() : newPosition;
 	};
 
-	#eatFoot = () => {
-		if (
-			this.snakeHeadPosition?.x === this.foodPosition?.x &&
-			this.snakeHeadPosition?.y === this.foodPosition?.y
-		) {
-			clearInterval(this.#gameInterval);
+	/**
+	 * Handles the logic when the snake eats the food.
+	 * if the foot has eaten, increase the snake speed, update the score, and generate a new food position.
+	 * if the food has not eaten, remove the last segment of the snake.
+	 * @private
+	 */
+	#eatFood = () => {
+		const { x, y } = this.snakeHeadPosition;
+		const isFoodEaten = x === this.foodPosition.x && y === this.foodPosition.y;
 
+		if (isFoodEaten) {
+			clearInterval(this.#gameInterval);
 			this.#increaseSnakeSpeed();
 			this.#updateScore();
 			this.foodPosition = this.#generateFoodPosition();
@@ -105,24 +174,28 @@ class SnakeGame extends Board {
 		}
 	};
 
-	#handlerKeyPress = (keyboardEvent) => {
-		const keyboardKey = keyboardEvent?.key;
-		const keyboardCode = keyboardEvent?.code;
+	/**
+	 * Handles the key press event.
+	 * if the user press the spacebar start the snake game
+	 * if the user press the escape key end the game
+	 * other wise liste for the arrow keys
+	 * @param {KeyboardEvent} keyboardEvent - The keyboard event object.
+	 */
+	#handleKeyPress = (keyboardEvent) => {
+		const { key, code } = keyboardEvent;
 
 		if (
 			!this.gameStarted &&
-			(keyboardCode === keyboardCodes.spaceBar ||
-				keyboardKey === keyboardKeys.spaceBar)
+			(code === keyboardCodes.spaceBar || key === keyboardKeys.spaceBar)
 		) {
 			this.startGame();
 		} else if (
 			this.gameStarted &&
-			(keyboardKey === keyboardKeys.escape ||
-				keyboardCode === keyboardKeys.escape)
+			(key === keyboardKeys.escape || code === keyboardKeys.escape)
 		) {
 			this.endGame();
 		} else {
-			switch (keyboardKey) {
+			switch (key) {
 				case keyboardKeys.arrowUp:
 					if (this.snakeDirection !== directions.down) {
 						this.snakeDirection = directions.up;
@@ -157,8 +230,11 @@ class SnakeGame extends Board {
 		}
 	};
 
+	/**
+	 * Adds the keydown event listener to the document to start the game
+	 */
 	listener = () => {
-		document.addEventListener(eventTypes.keydown, this.#handlerKeyPress);
+		document.addEventListener(eventTypes.keydown, this.#handleKeyPress);
 	};
 
 	#increaseSnakeSpeed = () => {
@@ -181,6 +257,10 @@ class SnakeGame extends Board {
 		}, this.#gameSpeedDelay);
 	};
 
+	/**
+	 * Moves the snake based on the current direction.
+	 * @private
+	 */
 	#moveSnake = () => {
 		this.snakeHeadPosition = { ...this.snakePositions[0] };
 
@@ -206,7 +286,7 @@ class SnakeGame extends Board {
 		}
 
 		this.snakePositions.unshift(this.snakeHeadPosition);
-		this.#eatFoot();
+		this.#eatFood();
 	};
 
 	startGame = () => {
@@ -231,12 +311,20 @@ class SnakeGame extends Board {
 		this.#updateScore();
 	};
 
+	/**
+	 * Updates the current score on the game board.
+	 * @private
+	 */
 	#updateScore = () => {
 		const currentScore = this.snakePositions.length - 1;
 
-		this.scoreElement.textContent = currentScore?.toString()?.padStart(3, "0");
+		this.scoreElement.textContent = currentScore.toString().padStart(3, "0");
 	};
 
+	/**
+	 * Updates the high score on the game board.
+	 * @private
+	 */
 	#updateHighScore = () => {
 		const currentScore = this.snakePositions.length - 1;
 
