@@ -7,7 +7,7 @@
   "author": "Victor Chavarro <victor.chavarro@todaytixgroup.com>",
   "license": "MIT",
   "scripts": {
-    "build": "esbuild ./src/assets/js/index.js --bundle --minify --target=chrome60,firefox60,safari11,edge18 --outfile=./src/assets/js/bundle.min.js --allow-overwrite",
+    "build": "esbuild ./src/assets/js/index.js --bundle --minify --target=chrome60,firefox60,safari11,edge18 --outfile=./public/assets/js/bundle.min.js --allow-overwrite",
     "build:dev": "esbuild ./src/assets/js/index.js --bundle --outfile=./src/assets/js/bundle.min.js --watch",
     "start:dev": "esbuild ./src/assets/js/index.js --bundle --minify --sourcemap --outfile=./src/assets/js/bundle.min.js --allow-overwrite --servedir=src --watch",
     "start": "esbuild ./src/assets/js/index.js --bundle --minify --outfile=./src/assets/js/bundle.min.js --allow-overwrite --servedir=src",

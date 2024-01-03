@@ -25,6 +25,14 @@ export const eventTypes = {
 	keydown: "keydown",
 };
 
+export const dbTables = {
+	highScores: "highScores",
+};
+
+export const dbColumns = {
+	score: "score",
+};
+
 export const defaultGameDelay = 200;
 export const defaultGridSize = 20;
 export const defaultPosition = [{ x: 10, y: 10 }];

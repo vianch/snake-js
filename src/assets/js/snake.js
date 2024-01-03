@@ -1,4 +1,5 @@
 import Board from "./board";
+import Database from "./database";
 import { generateRandomNumber } from "./math.utils";
 import {
 	directions,
@@ -8,6 +9,9 @@ import {
 	keyboardKeys,
 	keyboardCodes,
 	defaultPosition,
+	supaBasePublic,
+	dbTables,
+	dbColumns,
 } from "./constants";
 
 /**
@@ -45,6 +49,7 @@ class SnakeGame extends Board {
 	 */
 	gameStarted = false;
 
+	#database = null;
 	/**
 	 * The size of the grid.
 	 * @private
@@ -81,6 +86,8 @@ class SnakeGame extends Board {
 		super();
 		this.snakePositions = [...snakePositions];
 		this.foodPosition = this.#generateFoodPosition();
+		this.#database = new Database(supaBasePublic);
+		this.#loadHighScores();
 	}
 
 	/**
@@ -237,6 +244,15 @@ class SnakeGame extends Board {
 		document.addEventListener(eventTypes.keydown, this.#handleKeyPress);
 	};
 
+	#loadHighScores = () => {
+		this.#database
+			.fetchData(dbTables.highScores, dbColumns.score)
+			.then((response) => {
+				this.#highScore = response[0].score;
+				this.#updateHighScoreText();
+			});
+	};
+
 	#increaseSnakeSpeed = () => {
 		if (this.#gameSpeedDelay > 150) {
 			this.#gameSpeedDelay -= 5;
@@ -311,6 +327,14 @@ class SnakeGame extends Board {
 		this.#updateScore();
 	};
 
+	#saveHighScore = async () => {
+		await this.#database.saveData(
+			dbTables.highScores,
+			dbColumns.score,
+			this.#highScore
+		);
+	};
+
 	/**
 	 * Updates the current score on the game board.
 	 * @private
@@ -330,10 +354,15 @@ class SnakeGame extends Board {
 
 		if (currentScore > this.#highScore) {
 			this.#highScore = currentScore;
-			this.highScoreElement.textContent = this.#highScore
-				.toString()
-				.padStart(3, "0");
+			this.#updateHighScoreText();
+			this.#saveHighScore().then(() => null);
 		}
+	};
+
+	#updateHighScoreText = () => {
+		this.highScoreElement.textContent = this.#highScore
+			.toString()
+			.padStart(3, "0");
 	};
 }
 
