@@ -1,3 +1,6 @@
+export const supaBasePublic =
+	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtc3RlYnJ4ZW1seXBudmd1YWl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDQyMjYzNDEsImV4cCI6MjAxOTgwMjM0MX0.RiHlHooOxRT2QNF25vku3Peh6dg47VOW_0LosO3sd-I";
+
 export const directions = {
 	left: "left",
 	right: "right",

@@ -1,5 +1,7 @@
 class Board {
 	// Define HTML elements
+	scoreElement = document.getElementById("score");
+	highScoreElement = document.getElementById("high-score");
 	#board = document.getElementById("game-board");
 	#instructionsElement = document.getElementById("instructions-container");
 

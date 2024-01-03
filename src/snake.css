@@ -153,6 +153,7 @@ body,
 	text-transform: capitalize;
 	font-size: 2rem;
 	color: var(--text-color);
+	max-width: 300px;
 }
 
 .scores {
@@ -191,6 +192,6 @@ body,
 	align-items: center;
 	justify-content: center;
 	align-content: center;
-	width: 400px;
-	height: 400px;
+	width: 410px;
+	height: 410px;
 }

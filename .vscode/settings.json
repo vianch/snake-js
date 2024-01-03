@@ -24,5 +24,6 @@
   "prettier.semi": true,
   "prettier.tabWidth": 2,
   "prettier.arrowParens": "always",
-  "prettier.singleQuote": false
+  "prettier.singleQuote": false,
+  "liveServer.settings.multiRootWorkspaceName": "my-snake-game"
 }
