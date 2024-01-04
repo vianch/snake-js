@@ -7,23 +7,28 @@
   "author": "Victor Chavarro <victor.chavarro@todaytixgroup.com>",
   "license": "MIT",
   "scripts": {
-    "build": "esbuild ./src/assets/js/index.js --bundle --minify --target=chrome60,firefox60,safari11,edge18 --outfile=./public/assets/js/bundle.min.js --allow-overwrite",
+    "build": "yarn run lint && yarn run build:prod && yarn run minify:css && yarn run minify:html",
+    "build:prod": "esbuild ./src/assets/js/index.js --bundle --minify --target=chrome60,firefox60,safari11,edge18 --outfile=./public/assets/js/bundle.min.js --allow-overwrite",
     "build:dev": "esbuild ./src/assets/js/index.js --bundle --outfile=./src/assets/js/bundle.min.js --watch",
-    "start:dev": "esbuild ./src/assets/js/index.js --bundle --minify --sourcemap --outfile=./src/assets/js/bundle.min.js --allow-overwrite --servedir=src --watch",
-    "start": "esbuild ./src/assets/js/index.js --bundle --minify --outfile=./src/assets/js/bundle.min.js --allow-overwrite --servedir=src",
     "dev": "yarn run build:dev",
+    "init": "rm -rf ./src/assets/js/bundle.min.js && rm -rf package-lock.json && rm -rf yarn.lock && rm -rf yarn-error.log && rm -rf node_modules && yarn install && yarn run build",
     "lint:style": "eslint -c .eslintrc.js  --fix src",
     "lint:formatting": "prettier --write src",
     "lint": "npm run lint:style && npm run lint:formatting",
-    "init": "rm -rf ./src/assets/js/bundle.min.js && rm -rf package-lock.json && rm -rf yarn.lock && rm -rf yarn-error.log && rm -rf node_modules && yarn install && yarn run build"
+    "minify:html": "html-minifier src/index.html --collapse-whitespace --remove-comments -o public/index.html",
+    "minify:css": "cleancss src/assets/css/snake.css  -o public/assets/css/snake.css",
+    "start": "esbuild ./src/assets/js/index.js --bundle --minify --outfile=./src/assets/js/bundle.min.js --allow-overwrite --servedir=src",
+    "start:dev": "esbuild ./src/assets/js/index.js --bundle --minify --sourcemap --outfile=./src/assets/js/bundle.min.js --allow-overwrite --servedir=src --watch"
   },
   "devDependencies": {
+    "clean-css-cli": "^5.6.3",
     "esbuild": "^0.19.11",
     "eslint": "^7.32.0 || ^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^5.1.2",
+    "html-minifier": "^4.0.0",
     "husky": "^8.0.3",
     "prettier": "^3.1.1"
   },
