@@ -19,10 +19,23 @@ class Board {
 		this.#board.innerHTML = "";
 	}
 
-	endBoard() {
-		this.clearBoard();
-		this.#instructionsElement.style.display = "flex";
-		this.#board.style.display = "none";
+	blinkBoard() {
+		this.#board.classList.add("snake-die");
+	}
+
+	async endBoard() {
+		this.blinkBoard();
+
+		return new Promise((resolve) => {
+			setTimeout(() => {
+				this.clearBoard();
+				this.#instructionsElement.style.display = "flex";
+				this.#board.style.display = "none";
+				this.#board.classList.remove("snake-die");
+
+				resolve();
+			}, 1400);
+		});
 	}
 
 	startBoard() {

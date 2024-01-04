@@ -77,6 +77,7 @@ class SnakeGame extends Board {
 	 * @type {number}
 	 */
 	#highScore = 0;
+	#isPressingKey = false;
 
 	/**
 	 * Creates a new SnakeGame instance.
@@ -107,7 +108,7 @@ class SnakeGame extends Board {
 			y > this.#gridSize;
 
 		if (isCollisionDetected) {
-			this.endGame();
+			this.endGame().then(() => null);
 		}
 	};
 
@@ -191,49 +192,55 @@ class SnakeGame extends Board {
 	#handleKeyPress = (keyboardEvent) => {
 		const { key, code } = keyboardEvent;
 
-		if (
-			!this.gameStarted &&
-			(code === keyboardCodes.spaceBar || key === keyboardKeys.spaceBar)
-		) {
-			this.startGame();
-		} else if (
-			this.gameStarted &&
-			(key === keyboardKeys.escape || code === keyboardKeys.escape)
-		) {
-			this.endGame();
-		} else {
-			switch (key) {
-				case keyboardKeys.arrowUp:
-					if (this.snakeDirection !== directions.down) {
-						this.snakeDirection = directions.up;
-					}
+		if (!this.#isPressingKey) {
+			this.#isPressingKey = true;
 
-					break;
+			if (
+				!this.gameStarted &&
+				(code === keyboardCodes.spaceBar || key === keyboardKeys.spaceBar)
+			) {
+				this.startGame();
+			} else if (
+				this.gameStarted &&
+				(key === keyboardKeys.escape || code === keyboardKeys.escape)
+			) {
+				this.endGame().then(() => null);
+			} else {
+				switch (key) {
+					case keyboardKeys.arrowUp:
+						if (this.snakeDirection !== directions.down) {
+							this.snakeDirection = directions.up;
+						}
 
-				case keyboardKeys.arrowDown:
-					if (this.snakeDirection !== directions.up) {
-						this.snakeDirection = directions.down;
-					}
+						break;
 
-					break;
+					case keyboardKeys.arrowDown:
+						if (this.snakeDirection !== directions.up) {
+							this.snakeDirection = directions.down;
+						}
 
-				case keyboardKeys.arrowLeft:
-					if (this.snakeDirection !== directions.right) {
-						this.snakeDirection = directions.left;
-					}
+						break;
 
-					break;
+					case keyboardKeys.arrowLeft:
+						if (this.snakeDirection !== directions.right) {
+							this.snakeDirection = directions.left;
+						}
 
-				case keyboardKeys.arrowRight:
-					if (this.snakeDirection !== directions.left) {
-						this.snakeDirection = directions.right;
-					}
+						break;
 
-					break;
+					case keyboardKeys.arrowRight:
+						if (this.snakeDirection !== directions.left) {
+							this.snakeDirection = directions.right;
+						}
 
-				default:
-					break;
+						break;
+
+					default:
+						break;
+				}
 			}
+
+			this.#isPressingKey = false;
 		}
 	};
 
@@ -311,14 +318,15 @@ class SnakeGame extends Board {
 		this.#initializeGameInterval();
 	};
 
-	resetGame = () => {
+	resetGame = async () => {
 		clearInterval(this.#gameInterval);
 		this.gameStarted = false;
-		this.endBoard();
+		await this.endBoard();
 	};
 
-	endGame = () => {
-		this.resetGame();
+	endGame = async () => {
+		await this.resetGame();
+
 		this.#updateHighScore();
 		this.snakePositions = [...defaultPosition];
 		this.foodPosition = this.#generateFoodPosition();

@@ -181,6 +181,12 @@ body,
 	border: #5a5a5a 1px dotted;
 }
 
+.snake-die {
+	animation-delay: -2s;
+	animation: blink-animation 0.25s steps(4, start) infinite;
+	-webkit-animation: blink-animation 0.25s steps(4, start) infinite;
+}
+
 .food {
 	background-color: #dedede;
 	border: #999999 5px solid;
@@ -194,4 +200,10 @@ body,
 	align-content: center;
 	width: 410px;
 	height: 410px;
+}
+
+@-webkit-keyframes blink-animation {
+	to {
+		visibility: hidden;
+	}
 }
