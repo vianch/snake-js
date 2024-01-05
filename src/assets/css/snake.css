@@ -483,7 +483,7 @@ body {
 .score-table-container {
 	width: 100%;
 	display: inline-block;
-	margin: 24px 0;
+	margin: 24px 15px;
 	background-color: var(--accent-color);
 	max-width: 380px;
 	max-height: 390px;
