@@ -194,11 +194,11 @@ body {
 	justify-content: space-between;
 	align-items: center;
 	z-index: 2;
-	padding: .3125rem 1rem;
+	padding: 0.3125rem 1rem;
 	background-color: var(--background-color);
-	webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,.57);
-	-moz-box-shadow: 0 2px 2px 0 rgba(0,0,0,.57);
-	box-shadow: 0 2px 2px 0 rgba(0,0,0,.57);
+	webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.57);
+	-moz-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.57);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.57);
 }
 
 #see-scores {
@@ -206,7 +206,7 @@ body {
 	color: var(--green);
 	font-size: 1.5rem;
 	letter-spacing: 2px;
-	cursor: pointer
+	cursor: pointer;
 }
 
 .scores-container {
@@ -423,7 +423,6 @@ body {
 	color: var(--text-color-light);
 }
 
-
 #score-table-container {
 	text-align: center;
 }
@@ -446,7 +445,8 @@ body {
 	width: 100%;
 }
 
-.header-score, .score {
+.header-score,
+.score {
 	text-align: right;
 }
 
@@ -471,7 +471,6 @@ body {
 	justify-content: space-between;
 	align-items: center;
 	font-size: 1.8rem;
-
 }
 
 .score-header > div {
