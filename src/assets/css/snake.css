@@ -291,14 +291,16 @@ body {
 	cursor: pointer;
 }
 
-.eightbit-btn:hover, .eightbit-btn:focus {
+.eightbit-btn:hover,
+.eightbit-btn:focus {
 	background: var(--secondary-color);
 	box-shadow: inset -4px -4px 0 0 var(--tertiary-color);
 }
 .eightbit-btn:active {
 	box-shadow: inset 2px 2px 0 0 var(--tertiary-color);
 }
-.eightbit-btn:before, .eightbit-btn:after {
+.eightbit-btn:before,
+.eightbit-btn:after {
 	content: "";
 	position: absolute;
 	width: 100%;
