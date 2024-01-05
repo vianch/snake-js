@@ -1,6 +1,6 @@
 import Board from "./board";
 import Database from "./database";
-import { debounce, generateRandomNumber } from "./utils";
+import { generateRandomNumber } from "./utils";
 import {
 	directions,
 	defaultGridSize,
@@ -269,11 +269,7 @@ class SnakeGame extends Board {
 	 * Adds the keydown event listener to the document to start the game
 	 */
 	listener = () => {
-		document.addEventListener(
-			eventTypes.keydown,
-			debounce(this.#handleKeyPress, 25),
-			false
-		);
+		document.addEventListener(eventTypes.keydown, this.#handleKeyPress, false);
 	};
 
 	#loadHighScores = () => {
