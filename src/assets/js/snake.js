@@ -1,6 +1,6 @@
 import Board from "./board";
 import Database from "./database";
-import { generateRandomNumber } from "./math.utils";
+import { debounce, generateRandomNumber } from "./utils";
 import {
 	directions,
 	defaultGridSize,
@@ -24,6 +24,7 @@ class SnakeGame extends Board {
 	 * @type {string}
 	 */
 	snakeDirection = directions.right;
+	previousSnakeDirection = directions.right;
 
 	/**
 	 * The positions of the snake segments (THE SNAKE!!!! ------0).
@@ -208,28 +209,48 @@ class SnakeGame extends Board {
 			} else {
 				switch (key) {
 					case keyboardKeys.arrowUp:
-						if (this.snakeDirection !== directions.down) {
+						if (
+							this.snakeDirection !== directions.down &&
+							this.previousSnakeDirection !== directions.down &&
+							this.previousSnakeDirection !== directions.up &&
+							this.snakeDirection !== directions.up
+						) {
 							this.snakeDirection = directions.up;
 						}
 
 						break;
 
 					case keyboardKeys.arrowDown:
-						if (this.snakeDirection !== directions.up) {
+						if (
+							this.previousSnakeDirection !== directions.down &&
+							this.previousSnakeDirection !== directions.up &&
+							this.snakeDirection !== directions.down &&
+							this.snakeDirection !== directions.up
+						) {
 							this.snakeDirection = directions.down;
 						}
 
 						break;
 
 					case keyboardKeys.arrowLeft:
-						if (this.snakeDirection !== directions.right) {
+						if (
+							this.previousSnakeDirection !== directions.right &&
+							this.previousSnakeDirection !== directions.left &&
+							this.snakeDirection !== directions.right &&
+							this.snakeDirection !== directions.left
+						) {
 							this.snakeDirection = directions.left;
 						}
 
 						break;
 
 					case keyboardKeys.arrowRight:
-						if (this.snakeDirection !== directions.left) {
+						if (
+							this.previousSnakeDirection !== directions.right &&
+							this.previousSnakeDirection !== directions.left &&
+							this.snakeDirection !== directions.right &&
+							this.snakeDirection !== directions.left
+						) {
 							this.snakeDirection = directions.right;
 						}
 
@@ -248,7 +269,11 @@ class SnakeGame extends Board {
 	 * Adds the keydown event listener to the document to start the game
 	 */
 	listener = () => {
-		document.addEventListener(eventTypes.keydown, this.#handleKeyPress);
+		document.addEventListener(
+			eventTypes.keydown,
+			debounce(this.#handleKeyPress, 25),
+			false
+		);
 	};
 
 	#loadHighScores = () => {
@@ -290,18 +315,22 @@ class SnakeGame extends Board {
 		switch (this.snakeDirection) {
 			case directions.right:
 				this.snakeHeadPosition.x += 1;
+				this.previousSnakeDirection = directions.right;
 				break;
 
 			case directions.left:
 				this.snakeHeadPosition.x -= 1;
+				this.previousSnakeDirection = directions.left;
 				break;
 
 			case directions.up:
 				this.snakeHeadPosition.y -= 1;
+				this.previousSnakeDirection = directions.up;
 				break;
 
 			case directions.down:
 				this.snakeHeadPosition.y += 1;
+				this.previousSnakeDirection = directions.down;
 				break;
 
 			default:
