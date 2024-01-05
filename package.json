@@ -8,17 +8,17 @@
   "license": "MIT",
   "scripts": {
     "build": "yarn run lint && yarn run build:prod && yarn run minify:css && yarn run minify:html",
-    "build:prod": "esbuild ./src/assets/js/index.js --bundle --minify --target=chrome60,firefox60,safari11,edge18 --outfile=./public/assets/js/bundle.min.js --allow-overwrite",
-    "build:dev": "esbuild ./src/assets/js/index.js --bundle --outfile=./src/assets/js/bundle.min.js --watch",
+    "build:prod": "esbuild ./src/assets/js/index.js --bundle --minify --target=chrome60,firefox60,safari11,edge18 --outfile=./public/assets/js/snake-bundle.min.js --allow-overwrite",
+    "build:dev": "esbuild ./src/assets/js/index.js --bundle --outfile=./src/assets/js/snake-bundle.min.js --watch",
     "dev": "yarn run build:dev",
-    "init": "rm -rf ./src/assets/js/bundle.min.js && rm -rf package-lock.json && rm -rf yarn.lock && rm -rf yarn-error.log && rm -rf node_modules && yarn install && yarn run build",
+    "init": "rm -rf ./src/assets/js/snake-bundle.min.js && rm -rf package-lock.json && rm -rf yarn.lock && rm -rf yarn-error.log && rm -rf node_modules && yarn install && yarn run build",
     "lint:style": "eslint -c .eslintrc.js  --fix src",
     "lint:formatting": "prettier --write src",
     "lint": "npm run lint:style && npm run lint:formatting",
     "minify:html": "html-minifier src/index.html --collapse-whitespace --remove-comments -o public/snake.html",
     "minify:css": "cleancss src/assets/css/snake.css  -o public/assets/css/snake.css",
-    "start": "esbuild ./src/assets/js/index.js --bundle --minify --outfile=./src/assets/js/bundle.min.js --allow-overwrite --servedir=src",
-    "start:dev": "esbuild ./src/assets/js/index.js --bundle --minify --sourcemap --outfile=./src/assets/js/bundle.min.js --allow-overwrite --servedir=src --watch"
+    "start": "esbuild ./src/assets/js/index.js --bundle --minify --outfile=./src/assets/js/snake-bundle.min.js --allow-overwrite --servedir=src",
+    "start:dev": "esbuild ./src/assets/js/index.js --bundle --minify --sourcemap --outfile=./src/assets/js/snake-bundle.min.js --allow-overwrite --servedir=src --watch"
   },
   "devDependencies": {
     "clean-css-cli": "^5.6.3",

@@ -4,6 +4,8 @@ class Board {
 	highScoreElement = document.getElementById("high-score");
 	#board = document.getElementById("game-board");
 	#instructionsElement = document.getElementById("instructions-container");
+	#controlsElement = document.getElementById("control-container");
+	startButton = document.getElementById("start-button");
 	arrows = {
 		up: document.getElementById("arrow-up"),
 		down: document.getElementById("arrow-down"),
@@ -38,6 +40,7 @@ class Board {
 				this.#instructionsElement.style.display = "flex";
 				this.#board.style.display = "none";
 				this.#board.classList.remove("snake-die");
+				this.endControls();
 
 				resolve();
 			}, 1400);
@@ -48,6 +51,17 @@ class Board {
 		this.#instructionsElement.style.display = "none";
 		this.#board.style.display = "grid";
 		this.clearBoard();
+		this.startControls();
+	}
+
+	startControls() {
+		this.startButton.style.display = "none";
+		this.#controlsElement.style.display = "inline-block";
+	}
+
+	endControls() {
+		this.startButton.style.display = "inline-block";
+		this.#controlsElement.style.display = "none";
 	}
 
 	static createGameElement = (elementType, className) => {

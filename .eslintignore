@@ -6,3 +6,4 @@ dist
 package-lock.json
 yarn.lock
 src/assets/js/bundle.min.js
+src/assets/js/snake-bundle.min.js

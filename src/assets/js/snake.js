@@ -7,6 +7,7 @@ import {
 	defaultGameDelay,
 	eventTypes,
 	keyboardKeys,
+	keyboardCodes,
 	defaultPosition,
 	supaBasePublic,
 	dbTables,
@@ -64,7 +65,7 @@ class SnakeGame extends Board {
 	 * @type {number}
 	 */
 	#gameInterval = null;
-	#foodInterval = null;
+
 	/**
 	 * The delay between game updates.
 	 * @private
@@ -175,12 +176,10 @@ class SnakeGame extends Board {
 
 		if (isFoodEaten) {
 			clearInterval(this.#gameInterval);
-			clearInterval(this.#foodInterval);
 			this.#increaseSnakeSpeed();
 			this.#updateScore();
 			this.foodPosition = this.#generateFoodPosition();
 			this.#initializeGameInterval();
-			this.#initializeFoodInterval();
 		} else {
 			this.snakePositions.pop();
 		}
@@ -199,7 +198,10 @@ class SnakeGame extends Board {
 		if (!this.#isPressingKey) {
 			this.#isPressingKey = true;
 
-			if (!this.gameStarted) {
+			if (
+				!this.gameStarted &&
+				(code === keyboardCodes.spaceBar || key === keyboardKeys.spaceBar)
+			) {
 				this.startGame();
 			} else if (
 				this.gameStarted &&
@@ -270,6 +272,9 @@ class SnakeGame extends Board {
 	 */
 	listener = () => {
 		document.addEventListener(eventTypes.keydown, this.#handleKeyPress, false);
+		this.startButton.addEventListener(eventTypes.click, () =>
+			this.#handleKeyPress({ key: keyboardKeys.spaceBar })
+		);
 		this.arrows.up.addEventListener(eventTypes.click, () =>
 			this.#handleKeyPress({ key: keyboardKeys.arrowUp })
 		);
@@ -317,12 +322,6 @@ class SnakeGame extends Board {
 		}, this.#gameSpeedDelay);
 	};
 
-	#initializeFoodInterval = () => {
-		this.#foodInterval = setInterval(() => {
-			this.foodPosition = this.#generateFoodPosition();
-		}, this.#foodDelay);
-	};
-
 	/**
 	 * Moves the snake based on the current direction.
 	 * @private
@@ -363,12 +362,10 @@ class SnakeGame extends Board {
 		this.gameStarted = true;
 		this.startBoard();
 		this.#initializeGameInterval();
-		this.#initializeFoodInterval();
 	};
 
 	resetGame = async () => {
 		clearInterval(this.#gameInterval);
-		clearInterval(this.#foodInterval);
 		this.gameStarted = false;
 		await this.endBoard();
 	};

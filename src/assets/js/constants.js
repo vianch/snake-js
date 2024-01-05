@@ -8,6 +8,10 @@ export const directions = {
 	down: "down",
 };
 
+export const keyboardCodes = {
+	spaceBar: "Space",
+};
+
 export const keyboardKeys = {
 	arrowUp: "ArrowUp",
 	arrowDown: "ArrowDown",

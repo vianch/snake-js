@@ -78,6 +78,7 @@ build/
 Thumbs.db
 dist
 src/assets/js/bundle.min.js
+src/assets/js/snake-bundle.min.js
 
 #Sublime
 *.sublime-project
