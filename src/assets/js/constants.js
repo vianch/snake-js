@@ -17,11 +17,8 @@ export const keyboardKeys = {
 	spaceBar: " ",
 };
 
-export const keyboardCodes = {
-	spaceBar: "Space",
-};
-
 export const eventTypes = {
+	click: "click",
 	keydown: "keydown",
 };
 
@@ -34,5 +31,6 @@ export const dbColumns = {
 };
 
 export const defaultGameDelay = 200;
+export const defaultFoodDelay = 6400;
 export const defaultGridSize = 20;
 export const defaultPosition = [{ x: 10, y: 10 }];

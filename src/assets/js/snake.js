@@ -7,11 +7,11 @@ import {
 	defaultGameDelay,
 	eventTypes,
 	keyboardKeys,
-	keyboardCodes,
 	defaultPosition,
 	supaBasePublic,
 	dbTables,
 	dbColumns,
+	defaultFoodDelay,
 } from "./constants";
 
 /**
@@ -64,13 +64,14 @@ class SnakeGame extends Board {
 	 * @type {number}
 	 */
 	#gameInterval = null;
-
+	#foodInterval = null;
 	/**
 	 * The delay between game updates.
 	 * @private
 	 * @type {number}
 	 */
 	#gameSpeedDelay = defaultGameDelay;
+	#foodDelay = defaultFoodDelay;
 
 	/**
 	 * The high score of the game.
@@ -174,10 +175,12 @@ class SnakeGame extends Board {
 
 		if (isFoodEaten) {
 			clearInterval(this.#gameInterval);
+			clearInterval(this.#foodInterval);
 			this.#increaseSnakeSpeed();
 			this.#updateScore();
 			this.foodPosition = this.#generateFoodPosition();
 			this.#initializeGameInterval();
+			this.#initializeFoodInterval();
 		} else {
 			this.snakePositions.pop();
 		}
@@ -196,10 +199,7 @@ class SnakeGame extends Board {
 		if (!this.#isPressingKey) {
 			this.#isPressingKey = true;
 
-			if (
-				!this.gameStarted &&
-				(code === keyboardCodes.spaceBar || key === keyboardKeys.spaceBar)
-			) {
+			if (!this.gameStarted) {
 				this.startGame();
 			} else if (
 				this.gameStarted &&
@@ -270,6 +270,18 @@ class SnakeGame extends Board {
 	 */
 	listener = () => {
 		document.addEventListener(eventTypes.keydown, this.#handleKeyPress, false);
+		this.arrows.up.addEventListener(eventTypes.click, () =>
+			this.#handleKeyPress({ key: keyboardKeys.arrowUp })
+		);
+		this.arrows.down.addEventListener(eventTypes.click, () =>
+			this.#handleKeyPress({ key: keyboardKeys.arrowDown })
+		);
+		this.arrows.left.addEventListener(eventTypes.click, () =>
+			this.#handleKeyPress({ key: keyboardKeys.arrowLeft })
+		);
+		this.arrows.right.addEventListener(eventTypes.click, () =>
+			this.#handleKeyPress({ key: keyboardKeys.arrowRight })
+		);
 	};
 
 	#loadHighScores = () => {
@@ -284,11 +296,15 @@ class SnakeGame extends Board {
 	#increaseSnakeSpeed = () => {
 		if (this.#gameSpeedDelay > 150) {
 			this.#gameSpeedDelay -= 5;
+			this.#foodDelay -= 200;
 		} else if (this.#gameSpeedDelay > 100) {
 			this.#gameSpeedDelay -= 3;
+			this.#foodDelay -= 100;
 		} else if (this.#gameSpeedDelay > 50) {
 			this.#gameSpeedDelay -= 2;
+			this.#foodDelay -= 50;
 		} else if (this.#gameSpeedDelay > 25) {
+			this.#foodDelay -= 25;
 			this.#gameSpeedDelay -= 1;
 		}
 	};
@@ -299,6 +315,12 @@ class SnakeGame extends Board {
 			this.#checkCollision();
 			this.draw();
 		}, this.#gameSpeedDelay);
+	};
+
+	#initializeFoodInterval = () => {
+		this.#foodInterval = setInterval(() => {
+			this.foodPosition = this.#generateFoodPosition();
+		}, this.#foodDelay);
 	};
 
 	/**
@@ -341,17 +363,18 @@ class SnakeGame extends Board {
 		this.gameStarted = true;
 		this.startBoard();
 		this.#initializeGameInterval();
+		this.#initializeFoodInterval();
 	};
 
 	resetGame = async () => {
 		clearInterval(this.#gameInterval);
+		clearInterval(this.#foodInterval);
 		this.gameStarted = false;
 		await this.endBoard();
 	};
 
 	endGame = async () => {
 		await this.resetGame();
-
 		this.#updateHighScore();
 		this.snakePositions = [...defaultPosition];
 		this.foodPosition = this.#generateFoodPosition();

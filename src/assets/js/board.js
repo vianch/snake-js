@@ -4,6 +4,12 @@ class Board {
 	highScoreElement = document.getElementById("high-score");
 	#board = document.getElementById("game-board");
 	#instructionsElement = document.getElementById("instructions-container");
+	arrows = {
+		up: document.getElementById("arrow-up"),
+		down: document.getElementById("arrow-down"),
+		left: document.getElementById("arrow-left"),
+		right: document.getElementById("arrow-right"),
+	};
 
 	appendElementToBoard(element) {
 		this.#board.appendChild(element);
