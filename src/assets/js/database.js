@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { dbColumns } from "./constants";
 
 // Create a single supabase client for interacting with your database
 const Database = class Database {
@@ -17,12 +18,17 @@ const Database = class Database {
 		);
 	}
 
-	async fetchData(tableName, columnName, ascending = false) {
+	async fetchData(
+		tableName,
+		columnName,
+		options = { ascending: false, orderBy: dbColumns.id, limit: 10 }
+	) {
+		const { ascending, orderBy, limit } = options;
 		const { data, error } = await this.supabase
 			.from(tableName)
 			.select(columnName)
-			.order(columnName, { ascending })
-			.limit(10);
+			.order(orderBy, { ascending })
+			.limit(limit);
 
 		if (error) {
 			throw new Error(error);
@@ -31,11 +37,33 @@ const Database = class Database {
 		return data;
 	}
 
-	async saveData(tableName, column, value) {
+	/** Update data in the db
+	 * @param tableName
+	 * @param newValue e.g: { score: value, updated_at: new Date() }
+	 * @returns {Promise<null>}
+	 */
+	async updateData(tableName, newValue) {
 		const { data, error } = await this.supabase
 			.from(tableName)
-			.update([{ [column]: value }])
+			.update([newValue])
 			.eq("id", 1);
+
+		if (error) {
+			throw new Error(error);
+		}
+
+		return data;
+	}
+
+	/** insert data in the db
+	 * @param tableName
+	 * @param newValue e.g: { score: value, created_at: new Date() }
+	 * @returns {Promise<null>}
+	 */
+	async insertData(tableName, newValue) {
+		const { data, error } = await this.supabase
+			.from(tableName)
+			.insert([newValue]);
 
 		if (error) {
 			throw new Error(error);

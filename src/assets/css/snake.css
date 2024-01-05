@@ -105,6 +105,10 @@ q:after {
 
 /* GAME */
 :root {
+	--cyan: #7ed1e2;
+	--pink: #ff61d8;
+	--orange: #ffcc81;
+	--green: #a5ea9b;
 	--primary-color: #595f43;
 	--secondary-color: #abb78a;
 	--tertiary-color: #8b966c;
@@ -121,7 +125,7 @@ body {
 }
 
 .game-container {
-	margin-top: 50px;
+	margin-top: 120px;
 	-webkit-tap-highlight-color: transparent;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
@@ -165,22 +169,61 @@ body {
 	color: var(--text-color);
 	max-width: 300px;
 }
+.score-container {
+	margin-right: 15px;
+}
+
+.score-title {
+	color: var(--cyan);
+}
+
+.score-title {
+	color: var(--cyan);
+}
+
+.high-score-title {
+	color: var(--pink);
+}
 
 .scores {
 	display: flex;
+	position: fixed;
+	width: 100%;
+	left: 0;
+	top: 0;
 	justify-content: space-between;
+	align-items: center;
+	z-index: 2;
+	padding: .3125rem 1rem;
+	background-color: var(--background-color);
+	webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,.57);
+	-moz-box-shadow: 0 2px 2px 0 rgba(0,0,0,.57);
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,.57);
+}
 
-	font-size: 2.5rem;
+#see-scores {
+	padding: 0 30px;
+	color: var(--green);
+	font-size: 1.5rem;
+	letter-spacing: 2px;
+	cursor: pointer
+}
+
+.scores-container {
+	width: 100%;
+	max-width: 440px;
+	position: relative;
+	display: flex;
+	font-size: 1.5rem;
 	font-weight: bolder;
-	margin: 10px 0;
 }
 
 #score {
-	color: var(--text-color-light);
+	color: var(--white-color);
 }
 
 #high-score {
-	color: var(--white-color);
+	color: var(--orange);
 }
 
 .game-border {
@@ -226,6 +269,31 @@ body {
 	text-align: center;
 }
 
+.arrow-key:active,
+.arrow-key.press {
+	box-shadow:
+		0px 0px 0 #999,
+		0px 0px 0 #999,
+		0px 0px 0 #999,
+		-1px 1px 0 #999;
+	transform: translate3d(-3px, 3px, 0);
+}
+.arrow-key.left:before {
+	content: "\2190";
+}
+
+.arrow-key.up:before {
+	content: "\2191";
+}
+
+.arrow-key.down:before {
+	content: "\2193";
+}
+
+.arrow-key.right:before {
+	content: "\2192";
+}
+
 .arrow-key {
 	align-items: center;
 	background: var(--secondary-color);
@@ -246,27 +314,6 @@ body {
 		box-shadow 0.1s linear,
 		transform 0.1s linear;
 	width: 75px;
-	&:active,
-	&.press {
-		box-shadow:
-			0px 0px 0 #999,
-			0px 0px 0 #999,
-			0px 0px 0 #999,
-			-1px 1px 0 #999;
-		transform: translate3d(-3px, 3px, 0);
-	}
-	&.left:before {
-		content: "\2190";
-	}
-	&.up:before {
-		content: "\2191";
-	}
-	&.down:before {
-		content: "\2193";
-	}
-	&.right:before {
-		content: "\2192";
-	}
 }
 
 .eightbit-btn {
@@ -281,9 +328,8 @@ body {
 	display: inline-block;
 	position: relative;
 	text-align: center;
-	font-size: 16px;
-	padding: 12px;
-	font-family: "Press Start 2P", cursive;
+	font-size: 32px;
+	padding: 6px 12px;
 	text-decoration: none;
 	color: var(--text-color);
 	box-shadow: inset -2px -2px 0 0 var(--primary-color);
@@ -346,4 +392,116 @@ body {
 		font-size: 1.5rem;
 		max-width: 200px;
 	}
+}
+
+#start-button {
+	min-height: 170px;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	align-items: center;
+}
+
+.instructions {
+	color: var(--white-color);
+	max-width: 300px;
+	margin-top: 15px;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+.title {
+	font-size: 3rem;
+}
+
+.description {
+	margin-top: 1rem;
+	font-size: 1.5rem;
+	color: var(--text-color-light);
+}
+
+
+#score-table-container {
+	text-align: center;
+}
+
+.retro-title {
+	color: var(--accent-color);
+}
+
+#score-table {
+	display: inline-block;
+	margin: 0;
+	width: 100%;
+}
+
+.score-entry > div {
+	color: var(--text-color);
+	font-size: 1.5rem;
+	border-collapse: collapse;
+	min-width: 100px;
+	width: 100%;
+}
+
+.header-score, .score {
+	text-align: right;
+}
+
+.score-entry {
+	display: inline-block;
+	text-align: left;
+	margin: 12px 0;
+}
+
+/* Styling dots with overflow */
+.score-entry .dots {
+	overflow: hidden;
+	display: inline-block;
+	vertical-align: bottom;
+	position: relative;
+	top: -10px;
+}
+
+.score-header,
+.score-entry {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 1.8rem;
+
+}
+
+.score-header > div {
+	font-weight: bold;
+	color: var(--text-color-dark);
+	min-width: 100px;
+	width: 100%;
+}
+
+.score-table-container {
+	width: 100%;
+	display: inline-block;
+	margin: 24px 0;
+	background-color: var(--accent-color);
+	max-width: 380px;
+	max-height: 390px;
+	padding: 30px;
+	border: var(--primary-color) solid 10px;
+	position: relative;
+}
+
+.modal {
+	background-color: rgba(3, 3, 3, 0.7);
+	position: fixed;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	top: 0;
+	left: 0;
+	z-index: 5;
+	width: 100%;
+	height: 100%;
 }

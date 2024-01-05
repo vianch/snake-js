@@ -81,6 +81,7 @@ class SnakeGame extends Board {
 	 */
 	#highScore = 0;
 	#isPressingKey = false;
+	#modalOpen = false;
 
 	/**
 	 * Creates a new SnakeGame instance.
@@ -92,7 +93,13 @@ class SnakeGame extends Board {
 		this.foodPosition = this.#generateFoodPosition();
 		this.#database = new Database(supaBasePublic);
 		this.#loadHighScores();
+		this.#loadScores();
 	}
+
+	#closeModalHandler = () => {
+		this.#modalOpen = false;
+		this.hideScoreModal();
+	};
 
 	/**
 	 * Checks for collision with the snake's head and the game boundaries or other segments.
@@ -197,17 +204,18 @@ class SnakeGame extends Board {
 
 		if (!this.#isPressingKey) {
 			this.#isPressingKey = true;
+			const isEscape =
+				key === keyboardKeys.escape || code === keyboardKeys.escape;
 
 			if (
 				!this.gameStarted &&
 				(code === keyboardCodes.spaceBar || key === keyboardKeys.spaceBar)
 			) {
 				this.startGame();
-			} else if (
-				this.gameStarted &&
-				(key === keyboardKeys.escape || code === keyboardKeys.escape)
-			) {
+			} else if (this.gameStarted && !this.#modalOpen && isEscape) {
 				this.endGame().then(() => null);
+			} else if (!this.gameStarted && this.#modalOpen && isEscape) {
+				this.#closeModalHandler();
 			} else {
 				switch (key) {
 					case keyboardKeys.arrowUp:
@@ -287,6 +295,32 @@ class SnakeGame extends Board {
 		this.arrows.right.addEventListener(eventTypes.click, () =>
 			this.#handleKeyPress({ key: keyboardKeys.arrowRight })
 		);
+
+		this.modal.addEventListener(eventTypes.click, () => {
+			if (this.#modalOpen && !this.gameStarted) {
+				this.#closeModalHandler();
+			}
+		});
+
+		this.seeScoresElement.addEventListener(eventTypes.click, () => {
+			if (!this.#modalOpen && !this.gameStarted) {
+				this.#modalOpen = true;
+				this.showScoreModal();
+				this.#loadScores();
+			}
+		});
+	};
+
+	#loadScores = () => {
+		this.#database
+			.fetchData(dbTables.scores, dbColumns.all, {
+				ascending: false,
+				orderBy: dbColumns.score,
+				limit: 10,
+			})
+			.then((response) => {
+				this.populateScores(response);
+			});
 	};
 
 	#loadHighScores = () => {
@@ -381,11 +415,10 @@ class SnakeGame extends Board {
 	};
 
 	#saveHighScore = async () => {
-		await this.#database.saveData(
-			dbTables.highScores,
-			dbColumns.score,
-			this.#highScore
-		);
+		await this.#database.updateData(dbTables.highScores, {
+			[dbColumns.score]: this.#highScore,
+			[dbColumns.updatedAt]: new Date(),
+		});
 	};
 
 	/**
@@ -410,6 +443,13 @@ class SnakeGame extends Board {
 			this.#updateHighScoreText();
 			this.#saveHighScore().then(() => null);
 		}
+
+		this.#database
+			.insertData(dbTables.scores, {
+				[dbColumns.score]: currentScore,
+				[dbColumns.createdAt]: new Date(),
+			})
+			.then(() => null);
 	};
 
 	#updateHighScoreText = () => {

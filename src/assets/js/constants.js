@@ -28,10 +28,15 @@ export const eventTypes = {
 
 export const dbTables = {
 	highScores: "highScores",
+	scores: "scores",
 };
 
 export const dbColumns = {
+	all: "*",
+	id: "id",
+	createdAt: "created_at",
 	score: "score",
+	updatedAt: "updated_at",
 };
 
 export const defaultGameDelay = 200;

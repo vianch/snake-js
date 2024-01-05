@@ -6,6 +6,11 @@
 export const generateRandomNumber = (size) =>
 	Math.floor(Math.random() * size) + 1;
 
-export function debounce() {
-	// if it's necessary
+export function formatDate(isoString) {
+	const date = new Date(isoString);
+	const day = date.getDate().toString().padStart(2, "0"); // Add leading zero if needed
+	const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Add leading zero if needed
+	const year = date.getFullYear();
+
+	return `${day}/${month}/${year}`;
 }

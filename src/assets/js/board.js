@@ -1,10 +1,15 @@
+import { formatDate } from "./utils";
+
 class Board {
 	// Define HTML elements
-	scoreElement = document.getElementById("score");
-	highScoreElement = document.getElementById("high-score");
 	#board = document.getElementById("game-board");
-	#instructionsElement = document.getElementById("instructions-container");
 	#controlsElement = document.getElementById("control-container");
+	#instructionsElement = document.getElementById("instructions-container");
+	#scoreTable = document.getElementById("score-table");
+	highScoreElement = document.getElementById("high-score");
+	modal = document.getElementById("modal");
+	scoreElement = document.getElementById("score");
+	seeScoresElement = document.getElementById("see-scores");
 	startButton = document.getElementById("start-button");
 	arrows = {
 		up: document.getElementById("arrow-up"),
@@ -23,12 +28,17 @@ class Board {
 		});
 	};
 
+	blinkBoard() {
+		this.#board.classList.add("snake-die");
+	}
+
 	clearBoard() {
 		this.#board.innerHTML = "";
 	}
 
-	blinkBoard() {
-		this.#board.classList.add("snake-die");
+	endControls() {
+		this.startButton.style.display = "flex";
+		this.#controlsElement.style.display = "none";
 	}
 
 	async endBoard() {
@@ -59,10 +69,22 @@ class Board {
 		this.#controlsElement.style.display = "inline-block";
 	}
 
-	endControls() {
-		this.startButton.style.display = "inline-block";
-		this.#controlsElement.style.display = "none";
-	}
+	populateScores = (scores) => {
+		if (scores) {
+			this.#scoreTable.innerHTML = "";
+			scores.forEach((score, index) => {
+				this.#scoreTable.appendChild(Board.createScoreEntry(score, index));
+			});
+		}
+	};
+
+	showScoreModal = () => {
+		this.modal.style.display = "flex";
+	};
+
+	hideScoreModal = () => {
+		this.modal.style.display = "none";
+	};
 
 	static createGameElement = (elementType, className) => {
 		const snakeElement = document.createElement(elementType);
@@ -70,6 +92,27 @@ class Board {
 		snakeElement.classList.add(className);
 
 		return snakeElement;
+	};
+
+	static createScoreEntry = (scoreData, index) => {
+		const entry = document.createElement("div");
+		const positionDiv = document.createElement("div");
+		const dateDiv = document.createElement("div");
+		const scoreDiv = document.createElement("div");
+
+		entry.className = "score-entry";
+		positionDiv.className = "position";
+		positionDiv.textContent = index + 1;
+		dateDiv.className = "date";
+		dateDiv.textContent = formatDate(scoreData.created_at);
+		scoreDiv.className = "score";
+		scoreDiv.textContent = scoreData.score;
+
+		entry.appendChild(positionDiv);
+		entry.appendChild(dateDiv);
+		entry.appendChild(scoreDiv);
+
+		return entry;
 	};
 
 	static setPosition = (element, segment) => {
