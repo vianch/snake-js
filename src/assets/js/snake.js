@@ -209,6 +209,7 @@ class SnakeGame extends Board {
 
 			if (
 				!this.gameStarted &&
+				!this.#modalOpen &&
 				(code === keyboardCodes.spaceBar || key === keyboardKeys.spaceBar)
 			) {
 				this.startGame();
