@@ -1,13 +1,24 @@
 # My Snake Game
 
 A classic Snake game implemented in JavaScript, providing a nostalgic trip with a modern twist. Use your keyboard or on-screen arrows to control the snake, and compete for high scores!
+<img width="892" alt="Screenshot 2024-01-07 at 16 56 02" src="https://github.com/vianch/my-snake-game/assets/1800887/91d912db-62fa-40d2-a882-f8efc5cab65b">
+<img width="893" alt="Screenshot 2024-01-07 at 16 56 05" src="https://github.com/vianch/my-snake-game/assets/1800887/be74ca92-9ced-47eb-954e-2445e6ece7c2">
+
+
 
 ## Game Instructions
 
 - **Movement**: Use the arrow keys `←`, `↑`, `↓`, `→` to control the snake's direction. For mobile or touch devices, use the on-screen arrows.
+<img width="319" alt="Screenshot 2024-01-07 at 16 56 43" src="https://github.com/vianch/my-snake-game/assets/1800887/358369e3-bf0f-4a6e-a8fe-4f4690867aa2">
+
 - **Start Game**: Press the spacebar or use the Start button to begin the game.
+<img width="129" alt="Screenshot 2024-01-07 at 16 57 07" src="https://github.com/vianch/my-snake-game/assets/1800887/c19fefd1-1abc-4f48-8329-dd8ce9e9c4af">
+
 - **View Scores**: Click on "See scores" to check the latest 10 scores displayed on the top right corner of the game screen.
+<img width="391" alt="Screenshot 2024-01-07 at 16 57 23" src="https://github.com/vianch/my-snake-game/assets/1800887/1de44225-3752-487c-bf0c-5caa9ddd719b">
+
 - **Scores**: High scores and the current score are displayed on the top left corner during gameplay.
+<img width="196" alt="Screenshot 2024-01-07 at 16 57 37" src="https://github.com/vianch/my-snake-game/assets/1800887/f55dacd5-70fb-4f80-b2de-a01926a31124">
 
 ## Getting Started
 
@@ -29,7 +40,7 @@ yarn install
 3. To start the development server:
 
 ```bash
-yarn run dev
+yarn run start:dev
 ```
 
 4. To build for production:
