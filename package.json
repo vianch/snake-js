@@ -4,7 +4,7 @@
   "description": "snake game in js",
   "main": "src/index.js",
   "repository": "git@github.com:vianch/my-snake-game.git",
-  "author": "Victor Chavarro <victor.chavarro@todaytixgroup.com>",
+  "author": "Victor Chavarro <info@vianch.com>",
   "license": "MIT",
   "scripts": {
     "build": "yarn run lint && yarn run build:prod && yarn run minify:css && yarn run minify:html",
