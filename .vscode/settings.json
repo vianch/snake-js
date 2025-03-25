@@ -25,5 +25,8 @@
   "prettier.tabWidth": 2,
   "prettier.arrowParens": "always",
   "prettier.singleQuote": false,
-  "liveServer.settings.multiRootWorkspaceName": "my-snake-game"
+  "liveServer.settings.multiRootWorkspaceName": "my-snake-game",
+  "cSpell.words": [
+    "supabase"
+  ]
 }

@@ -10,6 +10,7 @@ import {
 	keyboardCodes,
 	defaultPosition,
 	supaBasePublic,
+	supabaseUrl,
 	dbTables,
 	dbColumns,
 	defaultFoodDelay,
@@ -91,7 +92,7 @@ class SnakeGame extends Board {
 		super();
 		this.snakePositions = [...snakePositions];
 		this.foodPosition = this.#generateFoodPosition();
-		this.#database = new Database(supaBasePublic);
+		this.#database = new Database(supabaseUrl, supaBasePublic);
 		this.#loadHighScores();
 		this.#loadScores();
 	}

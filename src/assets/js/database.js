@@ -4,6 +4,7 @@ import { dbColumns } from "./constants";
 // Create a single supabase client for interacting with your database
 const Database = class Database {
 	constructor(
+		url,
 		key,
 		settings = {
 			db: {
@@ -11,11 +12,7 @@ const Database = class Database {
 			},
 		}
 	) {
-		this.supabase = createClient(
-			"https://umstebrxemlypnvguaiv.supabase.co",
-			key,
-			settings
-		);
+		this.supabase = createClient(url, key, settings);
 	}
 
 	async fetchData(
