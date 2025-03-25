@@ -15,7 +15,7 @@
     "lint:style": "eslint -c .eslintrc.js  --fix src",
     "lint:formatting": "prettier --write src",
     "lint": "npm run lint:style && npm run lint:formatting",
-    "minify:html": "html-minifier src/index.html --collapse-whitespace --remove-comments -o public/snake.html",
+    "minify:html": "html-minifier src/index.html --collapse-whitespace --remove-comments -o public/index.html",
     "minify:css": "cleancss src/assets/css/snake.css  -o public/assets/css/snake.css",
     "start": "esbuild ./src/assets/js/index.js --bundle --minify --outfile=./src/assets/js/snake-bundle.min.js --allow-overwrite --servedir=src",
     "start:dev": "esbuild ./src/assets/js/index.js --bundle --minify --sourcemap --outfile=./src/assets/js/snake-bundle.min.js --allow-overwrite --servedir=src --watch"
