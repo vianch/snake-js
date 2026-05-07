@@ -1,5 +1,5 @@
 import Board from "./board";
-import Database from "./database";
+import database from "./database";
 import { generateRandomNumber } from "./utils";
 import {
 	directions,
@@ -9,8 +9,6 @@ import {
 	keyboardKeys,
 	keyboardCodes,
 	defaultPosition,
-	supaBasePublic,
-	supabaseUrl,
 	dbTables,
 	dbColumns,
 	defaultFoodDelay,
@@ -92,7 +90,7 @@ class SnakeGame extends Board {
 		super();
 		this.snakePositions = [...snakePositions];
 		this.foodPosition = this.#generateFoodPosition();
-		this.#database = new Database(supabaseUrl, supaBasePublic);
+		this.#database = database;
 		this.#loadHighScores();
 		this.#loadScores();
 	}
