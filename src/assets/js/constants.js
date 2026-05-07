@@ -1,8 +1,3 @@
-export const supaBasePublic =
-	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtlbGhhaWZxbGRqZHN6aXp4dHJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5MDUzMzQsImV4cCI6MjA1ODQ4MTMzNH0.AIFP_bPkg67iLpwoyuYehu6fyNdbX4e1rVU1obXps_A";
-
-export const supabaseUrl = "https://kelhaifqldjdszizxtrp.supabase.co";
-
 export const directions = {
 	left: "left",
 	right: "right",
